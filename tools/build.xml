@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="nv_plugin" basedir=".">
+<project name="nv_clipboard" basedir=".">
 	<property name="version" value="0.1.0" />
-	<property name="plugin" value="nv_plugin" />
+	<property name="plugin" value="nv_clipboard" />
 	
 	<property name="source-path" location="../src" />
 	<property name="test-path" location="../test" />

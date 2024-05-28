@@ -1,10 +1,10 @@
-# nv_plugin Dictionary
+# nv_clipboard Dictionary
 # Copyright (C) 2023 Peter Triesberger
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1.0\n"
-"POT-Creation-Date: 2024-01-09 14:55:00\n"
+"POT-Creation-Date: 2024-05-28 10:45:16\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: LANGUAGE\n"
@@ -14,5 +14,14 @@ msgstr ""
 "Generated-By: novxlib pgettext.py 0.3\n"
 
 
-msgid "nv_plugin Online help"
+msgid "Copy"
+msgstr ""
+
+msgid "Paste"
+msgstr ""
+
+msgid "nv_clipboard Online help"
+msgstr ""
+
+msgid "nvhelp-en"
 msgstr ""

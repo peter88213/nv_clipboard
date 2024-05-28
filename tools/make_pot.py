@@ -1,15 +1,15 @@
 """Generate a template file (pot) for message translation.
 
-For further information see https://github.com/peter88213/nv_plugin
+For further information see https://github.com/peter88213/nv_clipboard
 License: GNU GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 """
 import os
 import sys
-import build_nv_plugin as build_plugin
+import build_nv_clipboard as build_plugin
 sys.path.insert(0, f'{os.getcwd()}/../../novxlib/src')
 import pgettext
 
-APP = 'nv_plugin'
+APP = 'nv_clipboard'
 POT_FILE = '../i18n/messages.pot'
 
 

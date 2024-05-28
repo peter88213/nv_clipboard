@@ -5,8 +5,8 @@
 ## Changelog
 
 
-### v1.0.0
+### v0.1.0 (Proof of concept)
 
-- Release under the GPLv3 license.
+- Items and locations can be copied/pasted via the main menu.
 
-Compatibility: noveltree v1.8 API
+Compatibility: novelibre v4.1 API

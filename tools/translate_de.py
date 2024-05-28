@@ -1,7 +1,7 @@
 """Generate German translation files for GNU gettext.
 
 - Update the project's 'de.po' translation file.
-- Generate the language specific 'nv_plugin.mo' dictionary.
+- Generate the language specific 'nv_clipboard.mo' dictionary.
 
 Usage: 
 translate_de.py
@@ -14,7 +14,7 @@ File structure:
 │   └── src/
 │       ├── translations.py
 │       └── msgfmt.py
-└── nv_plugin/
+└── nv_clipboard/
     ├── src/ 
     ├── tools/ 
     │   └── translate_de.py
@@ -24,10 +24,10 @@ File structure:
         └── locale/
             └─ de/
                └─ LC_MESSAGES/
-                  └─ nv_plugin.mo
+                  └─ nv_clipboard.mo
     
 Copyright (c) 2024 Peter Triesberger
-For further information see https://github.com/peter88213/nv_plugin
+For further information see https://github.com/peter88213/nv_clipboard
 License: GNU GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 """
 import os
@@ -37,14 +37,14 @@ import translations
 from shutil import copyfile
 import msgfmt
 
-APP_NAME = 'nv_plugin'
+APP_NAME = 'nv_clipboard'
 PO_PATH = '../i18n/de.po'
 MO_PATH = f'../i18n/locale/de/LC_MESSAGES/{APP_NAME}.mo'
 MO_COPY = f'../../novelibre/src/locale/de/LC_MESSAGES/{APP_NAME}.mo'
 
 
 def main(version='unknown'):
-    if translations.main('de', app=APP_NAME, appVersion=version):
+    if translations.main('de', app=APP_NAME, appVersion=version, json=True):
         print(f'Writing "{MO_PATH}" ...')
         msgfmt.make(PO_PATH, MO_PATH)
         copyfile(MO_PATH, MO_COPY)
