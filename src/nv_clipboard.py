@@ -22,9 +22,11 @@ import sys
 import webbrowser
 from xml.etree import ElementTree as ET
 
+from novxlib.novx_globals import CHAPTER_PREFIX
 from novxlib.novx_globals import CHARACTER_PREFIX
 from novxlib.novx_globals import ITEM_PREFIX
 from novxlib.novx_globals import LOCATION_PREFIX
+from novxlib.novx_globals import PLOT_LINE_PREFIX
 from novxlib.novx_globals import PLOT_POINT_PREFIX
 from novxlib.novx_globals import PRJ_NOTE_PREFIX
 from novxlib.novx_globals import SECTION_PREFIX
@@ -81,22 +83,17 @@ class Plugin(PluginBase):
 
         # Add an entry to the Help menu.
         self._ui.helpMenu.add_command(label=_('nv_clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
-        self._add_menu_entries()
 
-    def _add_menu_entries(self):
-        self._ui.characterMenu.add_separator()
-        self._ui.characterMenu.add_command(label=_('Copy'), command=self.element_to_clipboard)
-        self._ui.characterMenu.add_command(label=_('Paste'), command=self.element_from_clipboard)
+        # Key bindings
+        self._ui.tv.tree.bind('<Control-c>', self.element_to_clipboard)
+        self._ui.tv.tree.bind('<Control-v>', self.element_from_clipboard)
 
-        self._ui.locationMenu.add_separator()
-        self._ui.locationMenu.add_command(label=_('Copy'), command=self.element_to_clipboard)
-        self._ui.locationMenu.add_command(label=_('Paste'), command=self.element_from_clipboard)
+        self._add_toolbar_buttons()
 
-        self._ui.itemMenu.add_separator()
-        self._ui.itemMenu.add_command(label=_('Copy'), command=self.element_to_clipboard)
-        self._ui.itemMenu.add_command(label=_('Paste'), command=self.element_from_clipboard)
+    def _add_toolbar_buttons(self):
+        pass
 
-    def element_to_clipboard(self, elemPrefix=None):
+    def element_to_clipboard(self, event=None, elemPrefix=None):
         try:
             node = self._ui.tv.tree.selection()[0]
         except:
@@ -108,7 +105,9 @@ class Plugin(PluginBase):
                 return
 
         elementContainers = {
+            CHAPTER_PREFIX: self._mdl.novel.chapters,
             SECTION_PREFIX: self._mdl.novel.sections,
+            PLOT_LINE_PREFIX: self._mdl.novel.plotLines,
             PLOT_POINT_PREFIX: self._mdl.novel.plotPoints,
             CHARACTER_PREFIX: self._mdl.novel.characters,
             LOCATION_PREFIX: self._mdl.novel.locations,
@@ -121,13 +120,15 @@ class Plugin(PluginBase):
         elem = elementContainers[nodePrefix][node]
         xmlElement = ET.Element(nodePrefix)
         elem.to_xml(xmlElement)
+        self._remove_references(xmlElement)
         text = ET.tostring(xmlElement)
         # no utf-8 encoding here, because the text is escaped
         self._ui.root.clipboard_clear()
         self._ui.root.clipboard_append(text)
         self._ui.root.update()
+        return 'break'
 
-    def element_from_clipboard(self, elemPrefix=None):
+    def element_from_clipboard(self, event=None, elemPrefix=None):
         try:
             text = self._ui.root.clipboard_get()
             xmlElement = ET.fromstring(text)
@@ -140,7 +141,9 @@ class Plugin(PluginBase):
                 return
 
         elementControls = {
+            CHAPTER_PREFIX: (self._ctrl.add_chapter, self._mdl.novel.chapters),
             SECTION_PREFIX: (self._ctrl.add_section, self._mdl.novel.sections),
+            PLOT_LINE_PREFIX: (self._ctrl.add_plot_line, self._mdl.novel.plotLines),
             PLOT_POINT_PREFIX: (self._ctrl.add_plot_point, self._mdl.novel.plotPoints),
             CHARACTER_PREFIX: (self._ctrl.add_character, self._mdl.novel.characters),
             LOCATION_PREFIX: (self._ctrl.add_location, self._mdl.novel.locations),
@@ -153,4 +156,17 @@ class Plugin(PluginBase):
         elemCreator, elemContainer = elementControls[nodePrefix]
         elemId = elemCreator()
         elemContainer[elemId].from_xml(xmlElement)
+        return 'break'
 
+    def _remove_references(self, xmlElement):
+        references = [
+            'Characters',
+            'Locations',
+            'Items',
+            'PlotlineNotes',
+            'Sections',
+            'Section',
+        ]
+        for ref in references:
+            for xmlRef in xmlElement.findall(ref):
+                xmlElement.remove(xmlRef)
