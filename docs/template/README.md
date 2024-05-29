@@ -1,4 +1,4 @@
-[![Download the latest release](docs/img/download-button.png)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v4.1.2.zip)
+[![Download the latest release](docs/img/download-button.png)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.99.0.zip)
 [![Changelog](docs/img/changelog-button.png)](docs/changelog.md)
 [![News](docs/img/news-button.png)](https://github.com/peter88213/novelibre/discussions/1)
 [![Online help](docs/img/help-button.png)](https://peter88213.github.io/nvhelp-en/nv_clipboard/)
