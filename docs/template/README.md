@@ -1,3 +1,8 @@
+[![Download the latest release](docs/img/download-button.png)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v4.1.2.zip)
+[![Changelog](docs/img/changelog-button.png)](docs/changelog.md)
+[![News](docs/img/news-button.png)](https://github.com/peter88213/novelibre/discussions/1)
+[![Online help](docs/img/help-button.png)](https://peter88213.github.io/nvhelp-en/nv_clipboard/)
+
 # nv_clipboard
 
 The [novelibre](https://github.com/peter88213/novelibre/) Python program helps authors organize novels.  
@@ -5,6 +10,26 @@ The [novelibre](https://github.com/peter88213/novelibre/) Python program helps a
 *nv_clipboard* is a plugin providing copy and paste capability for *novelibre* tree elements. 
 
 ![Screenshot](docs/Screenshots/screen01.png)
+
+## Features
+
+You can cut, copy, and paste the following tree elements via the system clipboard:
+
+- Parts and chapters,
+- sections,
+- stages, 
+- plot lines,
+- plot points,
+- characters, 
+- locations, 
+- items, 
+- project notes.
+
+Elements can be transferred to and from the clipboard one by one. 
+The element's properties are copied, except children and relationships. 
+
+Via the clipboard, you can transfer these elements between different *novelibre*
+projects, or within a project. 
 
 ## Requirements
 
