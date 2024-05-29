@@ -5,8 +5,8 @@
 ## Changelog
 
 
-### v0.1.0 (Proof of concept)
+### v0.3.0 (Proof of concept)
 
-- Items and locations can be copied/pasted via the main menu.
+- Provide Cut/Copy/Paste features by key shortcuts and toolbar buttons.
 
-Compatibility: novelibre v4.1 API
+Compatibility: novelibre v4.3 API

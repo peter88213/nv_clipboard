@@ -18,7 +18,9 @@ GNU General Public License for more details.
 import gettext
 import locale
 import os
+from pathlib import Path
 import sys
+from tkinter import ttk
 import webbrowser
 from xml.etree import ElementTree as ET
 
@@ -31,6 +33,7 @@ from novxlib.novx_globals import PLOT_POINT_PREFIX
 from novxlib.novx_globals import PRJ_NOTE_PREFIX
 from novxlib.novx_globals import SECTION_PREFIX
 from nvlib.plugin.plugin_base import PluginBase
+import tkinter as tk
 
 # Initialize localization.
 LOCALE_PATH = f'{os.path.dirname(sys.argv[0])}/locale/'
@@ -63,7 +66,7 @@ class Plugin(PluginBase):
         isRejected: Boolean --  Rejection flag.
     """
     VERSION = '@release'
-    API_VERSION = '4.1'
+    API_VERSION = '4.3'
     DESCRIPTION = 'A clipboard plugin'
     URL = 'https://github.com/peter88213/nv_clipboard'
     _HELP_URL = f'https://peter88213.github.io/{_("nvhelp-en")}/nv_clipboard/usage'
@@ -85,15 +88,103 @@ class Plugin(PluginBase):
         self._ui.helpMenu.add_command(label=_('nv_clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
 
         # Key bindings
-        self._ui.tv.tree.bind('<Control-c>', self.element_to_clipboard)
-        self._ui.tv.tree.bind('<Control-v>', self.element_from_clipboard)
+        self._ui.tv.tree.bind('<Control-x>', self._cut_element)
+        self._ui.tv.tree.bind('<Control-c>', self._copy_element)
+        self._ui.tv.tree.bind('<Control-v>', self._paste_element)
 
         self._add_toolbar_buttons()
 
-    def _add_toolbar_buttons(self):
-        pass
+    def disable_menu(self):
+        """Disable toolbar buttons when no project is open."""
+        self._cutButton.config(state='disabled')
+        self._copyButton.config(state='disabled')
+        self._pasteButton.config(state='disabled')
 
-    def element_to_clipboard(self, event=None, elemPrefix=None):
+    def enable_menu(self):
+        """Enable toolbar buttons when a project is open."""
+        self._cutButton.config(state='normal')
+        self._copyButton.config(state='normal')
+        self._pasteButton.config(state='normal')
+
+    def _add_toolbar_buttons(self):
+        prefs = self._ctrl.get_preferences()
+
+        # Get the icons.
+        if prefs.get('large_icons', False):
+            size = 24
+        else:
+            size = 16
+        try:
+            homeDir = str(Path.home()).replace('\\', '/')
+            iconPath = f'{homeDir}/.novx/icons/{size}'
+        except:
+            iconPath = None
+        try:
+            cutIcon = tk.PhotoImage(file=f'{iconPath}/cut.png')
+        except:
+            cutIcon = None
+        try:
+            copyIcon = tk.PhotoImage(file=f'{iconPath}/copy.png')
+        except:
+            copyIcon = None
+        try:
+            pasteIcon = tk.PhotoImage(file=f'{iconPath}/paste.png')
+        except:
+            pasteIcon = None
+
+        # Separator.
+        tk.Frame(self._ui.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
+
+        # "Cut" button.
+        self._cutButton = ttk.Button(
+            self._ui.toolbar.buttonBar,
+            text=_('Cut'),
+            image=cutIcon,
+            command=self._cut_element
+            )
+        self._cutButton.pack(side='left')
+        self._cutButton.image = cutIcon
+
+        # "Copy" button.
+        self._copyButton = ttk.Button(
+            self._ui.toolbar.buttonBar,
+            text=_('Copy'),
+            image=copyIcon,
+            command=self._copy_element
+            )
+        self._copyButton.pack(side='left')
+        self._copyButton.image = copyIcon
+
+        # "Paste" button.
+        self._pasteButton = ttk.Button(
+            self._ui.toolbar.buttonBar,
+            text=_('Paste'),
+            image=pasteIcon,
+            command=self._paste_element
+            )
+        self._pasteButton.pack(side='left')
+        self._pasteButton.image = pasteIcon
+
+    def _cut_element(self, event=None, elemPrefix=None):
+        if self._ctrl.check_lock():
+            return
+
+        try:
+            node = self._ui.tv.tree.selection()[0]
+        except:
+            return
+
+        if self._copy_element(elemPrefix) is None:
+            return
+
+        if self._ui.tv.tree.prev(node):
+            self._ui.tv.go_to_node(self._ui.tv.tree.prev(node))
+        else:
+            self._ui.tv.go_to_node(self._ui.tv.tree.parent(node))
+        self._mdl.delete_element(node)
+        return 'break'
+
+    def _copy_element(self, event=None, elemPrefix=None):
         try:
             node = self._ui.tv.tree.selection()[0]
         except:
@@ -128,7 +219,15 @@ class Plugin(PluginBase):
         self._ui.root.update()
         return 'break'
 
-    def element_from_clipboard(self, event=None, elemPrefix=None):
+    def _paste_element(self, event=None, elemPrefix=None):
+        if self._ctrl.check_lock():
+            return
+
+        try:
+            node = self._ui.tv.tree.selection()[0]
+        except:
+            return
+
         try:
             text = self._ui.root.clipboard_get()
             xmlElement = ET.fromstring(text)
@@ -143,27 +242,32 @@ class Plugin(PluginBase):
         if nodePrefix == SECTION_PREFIX:
             typeStr = xmlElement.get('type', 0)
             if int(typeStr) > 1:
-                elemId = self._ctrl.add_stage()
+                elemCreator = self._mdl.add_stage
             else:
-                elemId = self._ctrl.add_section()
+                elemCreator = self._mdl.add_section
             elemContainer = self._mdl.novel.sections
         else:
             elementControls = {
-                CHAPTER_PREFIX: (self._ctrl.add_chapter, self._mdl.novel.chapters),
-                PLOT_LINE_PREFIX: (self._ctrl.add_plot_line, self._mdl.novel.plotLines),
-                PLOT_POINT_PREFIX: (self._ctrl.add_plot_point, self._mdl.novel.plotPoints),
-                CHARACTER_PREFIX: (self._ctrl.add_character, self._mdl.novel.characters),
-                LOCATION_PREFIX: (self._ctrl.add_location, self._mdl.novel.locations),
-                ITEM_PREFIX: (self._ctrl.add_item, self._mdl.novel.items),
-                PRJ_NOTE_PREFIX: (self._ctrl.add_project_note, self._mdl.novel.projectNotes)
+                CHAPTER_PREFIX: (self._mdl.add_chapter, self._mdl.novel.chapters),
+                PLOT_LINE_PREFIX: (self._mdl.add_plot_line, self._mdl.novel.plotLines),
+                PLOT_POINT_PREFIX: (self._mdl.add_plot_point, self._mdl.novel.plotPoints),
+                CHARACTER_PREFIX: (self._mdl.add_character, self._mdl.novel.characters),
+                LOCATION_PREFIX: (self._mdl.add_location, self._mdl.novel.locations),
+                ITEM_PREFIX: (self._mdl.add_item, self._mdl.novel.items),
+                PRJ_NOTE_PREFIX: (self._mdl.add_project_note, self._mdl.novel.projectNotes)
             }
             if not nodePrefix in elementControls:
                 return
 
             elemCreator, elemContainer = elementControls[nodePrefix]
-            elemId = elemCreator()
-        elemContainer[elemId].from_xml(xmlElement)
+
+        newNode = elemCreator(targetNode=node)
+        if not newNode:
+            return
+
+        elemContainer[newNode].from_xml(xmlElement)
         self._ctrl.refresh_views()
+        self._ui.tv.go_to_node(newNode)
         return 'break'
 
     def _remove_references(self, xmlElement):

@@ -60,6 +60,10 @@ if __name__ == '__main__':
         # Install the localization files.
         copytree('locale', f'{applicationDir}/locale', dirs_exist_ok=True)
         output(f'Copying "locale"')
+
+        # Install the icons.
+        copytree('icons', f'{applicationDir}/icons', dirs_exist_ok=True)
+        output(f'Copying "icons"')
     else:
         output(f'ERROR: Cannot find a novelibre installation at "{applicationDir}"')
 
