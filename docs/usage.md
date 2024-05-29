@@ -2,7 +2,7 @@
 
 --- 
 
-A [novelibre](https://github.com/peter88213/novelibre/) plugin. 
+A [novelibre](https://github.com/peter88213/novelibre/) plugin providing copy and paste capability for *novelibre* tree elements. 
 
 ---
 
@@ -14,6 +14,8 @@ If [novelibre](https://github.com/peter88213/novelibre/) is installed, the setup
 ---
 
 # Operation
+
+See the [online help](https://peter88213.github.io/nvhelp-en/nv_clipboard/).
 
 ---
 

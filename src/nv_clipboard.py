@@ -84,7 +84,7 @@ class Plugin:
         self._ctrl = controller
 
         # Add an entry to the Help menu.
-        self._ui.helpMenu.add_command(label=_('nv_clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
+        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
 
         # Key bindings
         self._ui.tv.tree.bind('<Control-x>', self._cut_element)
