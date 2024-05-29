@@ -32,7 +32,6 @@ from novxlib.novx_globals import PLOT_LINE_PREFIX
 from novxlib.novx_globals import PLOT_POINT_PREFIX
 from novxlib.novx_globals import PRJ_NOTE_PREFIX
 from novxlib.novx_globals import SECTION_PREFIX
-from nvlib.plugin.plugin_base import PluginBase
 import tkinter as tk
 
 # Initialize localization.
@@ -51,7 +50,7 @@ except:
         return message
 
 
-class Plugin(PluginBase):
+class Plugin:
     """Clipboard plugin class.
     
     Public class constants:
@@ -69,7 +68,7 @@ class Plugin(PluginBase):
     API_VERSION = '4.3'
     DESCRIPTION = 'A clipboard plugin'
     URL = 'https://github.com/peter88213/nv_clipboard'
-    _HELP_URL = f'https://peter88213.github.io/{_("nvhelp-en")}/nv_clipboard/usage'
+    _HELP_URL = f'https://peter88213.github.io/{_("nvhelp-en")}/nv_clipboard/'
 
     def install(self, model, view, controller, prefs):
         """Install the plugin.

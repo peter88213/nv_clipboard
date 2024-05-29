@@ -5,7 +5,7 @@
 ## Changelog
 
 
-### v0.3.0 (Proof of concept)
+### v0.3.1 (Proof of concept)
 
 - Provide Cut/Copy/Paste features by key shortcuts and toolbar buttons.
 
