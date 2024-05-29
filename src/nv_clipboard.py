@@ -113,7 +113,7 @@ class Plugin(PluginBase):
             LOCATION_PREFIX: self._mdl.novel.locations,
             ITEM_PREFIX: self._mdl.novel.items,
             PRJ_NOTE_PREFIX: self._mdl.novel.projectNotes
-            }
+        }
         if not nodePrefix in elementContainers:
             return
 
@@ -140,22 +140,30 @@ class Plugin(PluginBase):
             if nodePrefix != elemPrefix:
                 return
 
-        elementControls = {
-            CHAPTER_PREFIX: (self._ctrl.add_chapter, self._mdl.novel.chapters),
-            SECTION_PREFIX: (self._ctrl.add_section, self._mdl.novel.sections),
-            PLOT_LINE_PREFIX: (self._ctrl.add_plot_line, self._mdl.novel.plotLines),
-            PLOT_POINT_PREFIX: (self._ctrl.add_plot_point, self._mdl.novel.plotPoints),
-            CHARACTER_PREFIX: (self._ctrl.add_character, self._mdl.novel.characters),
-            LOCATION_PREFIX: (self._ctrl.add_location, self._mdl.novel.locations),
-            ITEM_PREFIX: (self._ctrl.add_item, self._mdl.novel.items),
-            PRJ_NOTE_PREFIX: (self._ctrl.add_project_note, self._mdl.novel.projectNotes)
+        if nodePrefix == SECTION_PREFIX:
+            typeStr = xmlElement.get('type', 0)
+            if int(typeStr) > 1:
+                elemId = self._ctrl.add_stage()
+            else:
+                elemId = self._ctrl.add_section()
+            elemContainer = self._mdl.novel.sections
+        else:
+            elementControls = {
+                CHAPTER_PREFIX: (self._ctrl.add_chapter, self._mdl.novel.chapters),
+                PLOT_LINE_PREFIX: (self._ctrl.add_plot_line, self._mdl.novel.plotLines),
+                PLOT_POINT_PREFIX: (self._ctrl.add_plot_point, self._mdl.novel.plotPoints),
+                CHARACTER_PREFIX: (self._ctrl.add_character, self._mdl.novel.characters),
+                LOCATION_PREFIX: (self._ctrl.add_location, self._mdl.novel.locations),
+                ITEM_PREFIX: (self._ctrl.add_item, self._mdl.novel.items),
+                PRJ_NOTE_PREFIX: (self._ctrl.add_project_note, self._mdl.novel.projectNotes)
             }
-        if not nodePrefix in elementControls:
-            return
+            if not nodePrefix in elementControls:
+                return
 
-        elemCreator, elemContainer = elementControls[nodePrefix]
-        elemId = elemCreator()
+            elemCreator, elemContainer = elementControls[nodePrefix]
+            elemId = elemCreator()
         elemContainer[elemId].from_xml(xmlElement)
+        self._ctrl.refresh_views()
         return 'break'
 
     def _remove_references(self, xmlElement):

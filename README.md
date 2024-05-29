@@ -12,9 +12,9 @@ The [novelibre](https://github.com/peter88213/novelibre/) Python program helps a
 
 ## Download and install
 
-[Download the latest release (version 0.1.0)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.1.0.zip)
+[Download the latest release (version 0.2.0)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.2.0.zip)
 
-- Extract the "nv_clipboard_v0.1.0" folder from the downloaded zipfile "nv_clipboard_v0.1.0.zip".
+- Extract the "nv_clipboard_v0.2.0" folder from the downloaded zipfile "nv_clipboard_v0.2.0.zip".
 - Move into this new folder and launch **setup.pyw**. This installs the plugin for the local user.
 
 ---

@@ -3,8 +3,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.0\n"
-"POT-Creation-Date: 2024-05-28 10:45:16\n"
+"Project-Id-Version: 0.2.0\n"
+"POT-Creation-Date: 2024-05-29 14:17:49\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: LANGUAGE\n"
@@ -13,12 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: novxlib pgettext.py 0.3\n"
 
-
-msgid "Copy"
-msgstr ""
-
-msgid "Paste"
-msgstr ""
 
 msgid "nv_clipboard Online help"
 msgstr ""
