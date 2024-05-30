@@ -54,21 +54,22 @@ class ClipboardManager:
                 return
 
         elementContainers = {
-            CHAPTER_PREFIX: self._mdl.novel.chapters,
-            SECTION_PREFIX: self._mdl.novel.sections,
-            PLOT_LINE_PREFIX: self._mdl.novel.plotLines,
-            PLOT_POINT_PREFIX: self._mdl.novel.plotPoints,
-            CHARACTER_PREFIX: self._mdl.novel.characters,
-            LOCATION_PREFIX: self._mdl.novel.locations,
-            ITEM_PREFIX: self._mdl.novel.items,
-            PRJ_NOTE_PREFIX: self._mdl.novel.projectNotes
+            CHAPTER_PREFIX: (self._mdl.novel.chapters, 'CHAPTER'),
+            SECTION_PREFIX: (self._mdl.novel.sections, 'SECTION'),
+            PLOT_LINE_PREFIX: (self._mdl.novel.plotLines, 'ARC'),
+            PLOT_POINT_PREFIX: (self._mdl.novel.plotPoints, 'POINT'),
+            CHARACTER_PREFIX: (self._mdl.novel.characters, 'CHARACTER'),
+            LOCATION_PREFIX: (self._mdl.novel.locations, 'LOCATION'),
+            ITEM_PREFIX: (self._mdl.novel.items, 'ITEM'),
+            PRJ_NOTE_PREFIX: (self._mdl.novel.projectNotes, 'PROJECTNOTE')
         }
         if not nodePrefix in elementContainers:
             return
 
-        elem = elementContainers[nodePrefix][node]
-        xmlElement = ET.Element(nodePrefix)
-        elem.to_xml(xmlElement)
+        elementContainer, xmlTag = elementContainers[nodePrefix]
+        element = elementContainer[node]
+        xmlElement = ET.Element(xmlTag)
+        element.to_xml(xmlElement)
         self._remove_references(xmlElement)
         text = ET.tostring(xmlElement)
         # no utf-8 encoding here, because the text is escaped
@@ -92,7 +93,21 @@ class ClipboardManager:
         except:
             return
 
-        nodePrefix = xmlElement.tag
+        prefixes = {
+            'CHAPTER': CHAPTER_PREFIX,
+            'SECTION': SECTION_PREFIX,
+            'ARC': PLOT_LINE_PREFIX,
+            'POINT': PLOT_POINT_PREFIX,
+            'CHARACTER': CHARACTER_PREFIX,
+            'LOCATION': LOCATION_PREFIX,
+            'ITEM': ITEM_PREFIX,
+            'PROJECTNOTE': PRJ_NOTE_PREFIX
+        }
+
+        nodePrefix = prefixes.get(xmlElement.tag, None)
+        if nodePrefix is None:
+            return
+
         if elemPrefix is not None:
             if nodePrefix != elemPrefix:
                 return

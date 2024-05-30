@@ -5,7 +5,7 @@
 ## Changelog
 
 
-### v0.4.1
+### v0.5.0
 
 - Provide Copy/Paste features by key shortcuts and toolbar buttons.
 
