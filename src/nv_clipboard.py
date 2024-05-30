@@ -88,7 +88,7 @@ class Plugin(PluginBase):
             model -- reference to the main model instance of the application.
             view -- reference to the main view instance of the application.
             controller -- reference to the main controller instance of the application.
-            prefs -- reference to the application's global dictionary with settings and options.
+            prefs -- (deprecated) reference to the application's global dictionary with settings and options.
         
         Overrides the superclass method.
         """
@@ -102,6 +102,7 @@ class Plugin(PluginBase):
         #--- Configure the toolbar and bind keys.
 
         # Get the icons.
+        prefs = controller.get_preferences()
         if prefs.get('large_icons', False):
             size = 24
         else:
