@@ -77,7 +77,7 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cut.enable()
+        self._cut.enable()
         self._copy.enable()
         self._paste.enable()
 
@@ -131,7 +131,7 @@ class Plugin(PluginBase):
         tk.Frame(view.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
 
         # Initialize the operations.
-        # self._cut = ClipboardOperation(view,_('Cut'),cutIcon,'<Control-x>',clipboardManager._cut_element)
+        self._cut = ClipboardOperation(view, _('Cut'), cutIcon, '<Control-x>', clipboardManager._cut_element)
         self._copy = ClipboardOperation(view, _('Copy'), copyIcon, '<Control-c>', clipboardManager._copy_element)
         self._paste = ClipboardOperation(view, _('Paste'), pasteIcon, '<Control-v>', clipboardManager._paste_element)
 

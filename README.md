@@ -1,4 +1,4 @@
-[![Download the latest release](docs/img/download-button.png)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.6.0.zip)
+[![Download the latest release](docs/img/download-button.png)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.7.0.zip)
 [![Changelog](docs/img/changelog-button.png)](docs/changelog.md)
 [![News](docs/img/news-button.png)](https://github.com/peter88213/novelibre/discussions/1)
 [![Online help](docs/img/help-button.png)](https://peter88213.github.io/nvhelp-en/nv_clipboard/)
@@ -13,7 +13,7 @@ The [novelibre](https://github.com/peter88213/novelibre/) Python program helps a
 
 ## Features
 
-You can copy and paste the following tree elements via the system clipboard:
+You can cut, copy, and paste the following tree elements via the system clipboard:
 
 - Parts and chapters,
 - sections,
@@ -37,9 +37,9 @@ projects, or within a project.
 
 ## Download and install
 
-[Download the latest release (version 0.6.0)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.6.0.zip)
+[Download the latest release (version 0.7.0)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.7.0.zip)
 
-- Extract the "nv_clipboard_v0.6.0" folder from the downloaded zipfile "nv_clipboard_v0.6.0.zip".
+- Extract the "nv_clipboard_v0.7.0" folder from the downloaded zipfile "nv_clipboard_v0.7.0.zip".
 - Move into this new folder and launch **setup.pyw**. This installs the plugin for the local user.
 
 ---

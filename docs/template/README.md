@@ -13,7 +13,7 @@ The [novelibre](https://github.com/peter88213/novelibre/) Python program helps a
 
 ## Features
 
-You can copy and paste the following tree elements via the system clipboard:
+You can cut, copy, and paste the following tree elements via the system clipboard:
 
 - Parts and chapters,
 - sections,
