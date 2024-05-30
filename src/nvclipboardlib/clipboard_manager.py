@@ -71,6 +71,19 @@ class ClipboardManager:
         xmlElement = ET.Element(xmlTag)
         element.to_xml(xmlElement)
         self._remove_references(xmlElement)
+
+        # Get children, if any.
+        if nodePrefix == CHAPTER_PREFIX:
+            for scId in self._mdl.novel.tree.get_children(node):
+                xmlSection = ET.SubElement(xmlElement, 'SECTION')
+                self._mdl.novel.sections[scId].to_xml(xmlSection)
+                self._remove_references(xmlSection)
+        elif nodePrefix == PLOT_LINE_PREFIX:
+            for ppId in self._mdl.novel.tree.get_children(node):
+                xmlPlotPoint = ET.SubElement(xmlElement, 'POINT')
+                self._mdl.novel.plotPoints[ppId].to_xml(xmlPlotPoint)
+                self._remove_references(xmlPlotPoint)
+
         text = ET.tostring(xmlElement)
         # no utf-8 encoding here, because the text is escaped
         self._ui.root.clipboard_clear()
@@ -103,7 +116,6 @@ class ClipboardManager:
             'ITEM': ITEM_PREFIX,
             'PROJECTNOTE': PRJ_NOTE_PREFIX
         }
-
         nodePrefix = prefixes.get(xmlElement.tag, None)
         if nodePrefix is None:
             return
@@ -134,13 +146,28 @@ class ClipboardManager:
 
             elemCreator, elemContainer = elementControls[nodePrefix]
 
-        newNode = elemCreator(targetNode=node)
-        if not newNode:
+        elemId = elemCreator(targetNode=node)
+        if not elemId:
             return
 
-        elemContainer[newNode].from_xml(xmlElement)
+        elemContainer[elemId].from_xml(xmlElement)
+
+        # Get children, if any.
+        if nodePrefix == CHAPTER_PREFIX:
+            for xmlSection in xmlElement.iterfind('SECTION'):
+                typeStr = xmlSection.get('type', 0)
+                if int(typeStr) > 1:
+                    scId = self._mdl.add_stage(targetNode=elemId)
+                else:
+                    scId = self._mdl.add_section(targetNode=elemId)
+                self._mdl.novel.sections[scId].from_xml(xmlSection)
+        elif nodePrefix == PLOT_LINE_PREFIX:
+            for xmlPoint in xmlElement.iterfind('POINT'):
+                ppId = self._mdl.add_plot_point(targetNode=elemId)
+                self._mdl.novel.plotPoints[ppId].from_xml(xmlPoint)
+
         self._ctrl.refresh_views()
-        self._ui.tv.go_to_node(newNode)
+        self._ui.tv.go_to_node(elemId)
         return 'break'
 
     def _remove_references(self, xmlElement):
