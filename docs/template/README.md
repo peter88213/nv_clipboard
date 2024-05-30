@@ -9,7 +9,7 @@ The [novelibre](https://github.com/peter88213/novelibre/) Python program helps a
 
 *nv_clipboard* is a plugin providing copy and paste capability for *novelibre* tree elements. 
 
-![Screenshot](docs/Screenshots/screen02.png)
+![Screenshot](docs/Screenshots/screen01.png)
 
 ## Features
 
