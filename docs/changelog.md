@@ -5,8 +5,8 @@
 ## Changelog
 
 
-### v0.3.2
+### v0.4.0
 
-- Provide Cut/Copy/Paste features by key shortcuts and toolbar buttons.
+- Provide Copy/Paste features by key shortcuts and toolbar buttons.
 
 Compatibility: novelibre v4.3 API

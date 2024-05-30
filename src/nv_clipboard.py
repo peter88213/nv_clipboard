@@ -20,18 +20,11 @@ import locale
 import os
 from pathlib import Path
 import sys
-from tkinter import ttk
 import webbrowser
-from xml.etree import ElementTree as ET
 
-from novxlib.novx_globals import CHAPTER_PREFIX
-from novxlib.novx_globals import CHARACTER_PREFIX
-from novxlib.novx_globals import ITEM_PREFIX
-from novxlib.novx_globals import LOCATION_PREFIX
-from novxlib.novx_globals import PLOT_LINE_PREFIX
-from novxlib.novx_globals import PLOT_POINT_PREFIX
-from novxlib.novx_globals import PRJ_NOTE_PREFIX
-from novxlib.novx_globals import SECTION_PREFIX
+from nvclipboardlib.clipboard_manager import ClipboardManager
+from nvclipboardlib.clipboard_operation import ClipboardOperation
+from nvlib.plugin.plugin_base import PluginBase
 import tkinter as tk
 
 # Initialize localization.
@@ -50,7 +43,7 @@ except:
         return message
 
 
-class Plugin:
+class Plugin(PluginBase):
     """Clipboard plugin class.
     
     Public class constants:
@@ -70,6 +63,24 @@ class Plugin:
     URL = 'https://github.com/peter88213/nv_clipboard'
     _HELP_URL = f'https://peter88213.github.io/{_("nvhelp-en")}/nv_clipboard/'
 
+    def disable_menu(self):
+        """Disable toolbar buttons when no project is open.
+        
+        Overrides the superclass method.
+        """
+        # self._cut.disable()
+        self._copy.disable()
+        self._paste.disable()
+
+    def enable_menu(self):
+        """Enable toolbar buttons when a project is open.
+        
+        Overrides the superclass method.
+        """
+        # self._cut.enable()
+        self._copy.enable()
+        self._paste.enable()
+
     def install(self, model, view, controller, prefs):
         """Install the plugin.
         
@@ -78,35 +89,17 @@ class Plugin:
             view -- reference to the main view instance of the application.
             controller -- reference to the main controller instance of the application.
             prefs -- reference to the application's global dictionary with settings and options.
+        
+        Overrides the superclass method.
         """
-        self._mdl = model
-        self._ui = view
-        self._ctrl = controller
 
         # Add an entry to the Help menu.
-        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
+        view.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
 
-        # Key bindings
-        self._ui.tv.tree.bind('<Control-x>', self._cut_element)
-        self._ui.tv.tree.bind('<Control-c>', self._copy_element)
-        self._ui.tv.tree.bind('<Control-v>', self._paste_element)
+        # Set up the clipboard manager.
+        clipboardManager = ClipboardManager(model, view, controller)
 
-        self._add_toolbar_buttons()
-
-    def disable_menu(self):
-        """Disable toolbar buttons when no project is open."""
-        self._cutButton.config(state='disabled')
-        self._copyButton.config(state='disabled')
-        self._pasteButton.config(state='disabled')
-
-    def enable_menu(self):
-        """Enable toolbar buttons when a project is open."""
-        self._cutButton.config(state='normal')
-        self._copyButton.config(state='normal')
-        self._pasteButton.config(state='normal')
-
-    def _add_toolbar_buttons(self):
-        prefs = self._ctrl.get_preferences()
+        #--- Configure the toolbar and bind keys.
 
         # Get the icons.
         if prefs.get('large_icons', False):
@@ -131,153 +124,26 @@ class Plugin:
         except:
             pasteIcon = None
 
-        # Separator.
-        tk.Frame(self._ui.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
+        # Put a Separator on the toolbar.
+        tk.Frame(view.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
 
-        # "Cut" button.
-        self._cutButton = ttk.Button(
-            self._ui.toolbar.buttonBar,
-            text=_('Cut'),
-            image=cutIcon,
-            command=self._cut_element
-            )
-        self._cutButton.pack(side='left')
-        self._cutButton.image = cutIcon
+        # Initialize the operations.
+        # self._cut = ClipboardOperation(view,_('Cut'),cutIcon,'<Control-x>',clipboardManager._cut_element)
+        self._copy = ClipboardOperation(view, _('Copy'), copyIcon, '<Control-c>', clipboardManager._copy_element)
+        self._paste = ClipboardOperation(view, _('Paste'), pasteIcon, '<Control-v>', clipboardManager._paste_element)
 
-        # "Copy" button.
-        self._copyButton = ttk.Button(
-            self._ui.toolbar.buttonBar,
-            text=_('Copy'),
-            image=copyIcon,
-            command=self._copy_element
-            )
-        self._copyButton.pack(side='left')
-        self._copyButton.image = copyIcon
+    def lock(self):
+        """Inhibit changes on the model.
+        
+        Overrides the superclass method.
+        """
+        # self._cut.disable()
+        self._paste.disable()
 
-        # "Paste" button.
-        self._pasteButton = ttk.Button(
-            self._ui.toolbar.buttonBar,
-            text=_('Paste'),
-            image=pasteIcon,
-            command=self._paste_element
-            )
-        self._pasteButton.pack(side='left')
-        self._pasteButton.image = pasteIcon
-
-    def _cut_element(self, event=None, elemPrefix=None):
-        if self._ctrl.check_lock():
-            return
-
-        try:
-            node = self._ui.tv.tree.selection()[0]
-        except:
-            return
-
-        if self._copy_element(elemPrefix) is None:
-            return
-
-        if self._ui.tv.tree.prev(node):
-            self._ui.tv.go_to_node(self._ui.tv.tree.prev(node))
-        else:
-            self._ui.tv.go_to_node(self._ui.tv.tree.parent(node))
-        self._mdl.delete_element(node)
-        return 'break'
-
-    def _copy_element(self, event=None, elemPrefix=None):
-        try:
-            node = self._ui.tv.tree.selection()[0]
-        except:
-            return
-
-        nodePrefix = node[:2]
-        if elemPrefix is not None:
-            if nodePrefix != elemPrefix:
-                return
-
-        elementContainers = {
-            CHAPTER_PREFIX: self._mdl.novel.chapters,
-            SECTION_PREFIX: self._mdl.novel.sections,
-            PLOT_LINE_PREFIX: self._mdl.novel.plotLines,
-            PLOT_POINT_PREFIX: self._mdl.novel.plotPoints,
-            CHARACTER_PREFIX: self._mdl.novel.characters,
-            LOCATION_PREFIX: self._mdl.novel.locations,
-            ITEM_PREFIX: self._mdl.novel.items,
-            PRJ_NOTE_PREFIX: self._mdl.novel.projectNotes
-        }
-        if not nodePrefix in elementContainers:
-            return
-
-        elem = elementContainers[nodePrefix][node]
-        xmlElement = ET.Element(nodePrefix)
-        elem.to_xml(xmlElement)
-        self._remove_references(xmlElement)
-        text = ET.tostring(xmlElement)
-        # no utf-8 encoding here, because the text is escaped
-        self._ui.root.clipboard_clear()
-        self._ui.root.clipboard_append(text)
-        self._ui.root.update()
-        return 'break'
-
-    def _paste_element(self, event=None, elemPrefix=None):
-        if self._ctrl.check_lock():
-            return
-
-        try:
-            node = self._ui.tv.tree.selection()[0]
-        except:
-            return
-
-        try:
-            text = self._ui.root.clipboard_get()
-            xmlElement = ET.fromstring(text)
-        except:
-            return
-
-        nodePrefix = xmlElement.tag
-        if elemPrefix is not None:
-            if nodePrefix != elemPrefix:
-                return
-
-        if nodePrefix == SECTION_PREFIX:
-            typeStr = xmlElement.get('type', 0)
-            if int(typeStr) > 1:
-                elemCreator = self._mdl.add_stage
-            else:
-                elemCreator = self._mdl.add_section
-            elemContainer = self._mdl.novel.sections
-        else:
-            elementControls = {
-                CHAPTER_PREFIX: (self._mdl.add_chapter, self._mdl.novel.chapters),
-                PLOT_LINE_PREFIX: (self._mdl.add_plot_line, self._mdl.novel.plotLines),
-                PLOT_POINT_PREFIX: (self._mdl.add_plot_point, self._mdl.novel.plotPoints),
-                CHARACTER_PREFIX: (self._mdl.add_character, self._mdl.novel.characters),
-                LOCATION_PREFIX: (self._mdl.add_location, self._mdl.novel.locations),
-                ITEM_PREFIX: (self._mdl.add_item, self._mdl.novel.items),
-                PRJ_NOTE_PREFIX: (self._mdl.add_project_note, self._mdl.novel.projectNotes)
-            }
-            if not nodePrefix in elementControls:
-                return
-
-            elemCreator, elemContainer = elementControls[nodePrefix]
-
-        newNode = elemCreator(targetNode=node)
-        if not newNode:
-            return
-
-        elemContainer[newNode].from_xml(xmlElement)
-        self._ctrl.refresh_views()
-        self._ui.tv.go_to_node(newNode)
-        return 'break'
-
-    def _remove_references(self, xmlElement):
-        references = [
-            'Characters',
-            'Locations',
-            'Items',
-            'PlotlineNotes',
-            'Sections',
-            'Section',
-        ]
-        for ref in references:
-            for xmlRef in xmlElement.findall(ref):
-                xmlElement.remove(xmlRef)
+    def unlock(self):
+        """Enable changes on the model.
+        
+        Overrides the superclass method.
+        """
+        # self._cut.enable()
+        self._paste.enable()
