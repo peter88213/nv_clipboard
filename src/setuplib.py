@@ -76,16 +76,18 @@ def main(zipped=True):
     if os.path.isdir(applicationDir):
         pluginDir = f'{applicationDir}/plugin'
         os.makedirs(pluginDir, exist_ok=True)
+        output(f'Copying "{PLUGIN}" ...')
         copy_file(PLUGIN, pluginDir)
-        output(f'Sucessfully installed "{PLUGIN}" at "{os.path.normpath(pluginDir)}"')
 
         # Install the localization files.
+        output('Copying locale ...')
         copy_tree('locale', applicationDir)
-        output(f'Copying "locale"')
 
         # Install the icons.
+        output('Copying icons ...')
         copy_tree('icons', applicationDir)
-        output(f'Copying "icons"')
+
+        output(f'Sucessfully installed "{PLUGIN}" at "{os.path.normpath(pluginDir)}"')
     else:
         output(f'ERROR: Cannot find a novelibre installation at "{applicationDir}"')
 
