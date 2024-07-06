@@ -8,7 +8,7 @@ A [novelibre](https://github.com/peter88213/novelibre/) plugin providing copy an
 
 # Installation
 
-If [novelibre](https://github.com/peter88213/novelibre/) is installed, the setup script auto-installs the *nv_clipboard* plugin in the *novelibre* plugin directory.
+If [novelibre](https://github.com/peter88213/novelibre/) is installed, the setup script *setup.py* installs the *nv_clipboard* plugin in the *novelibre* plugin directory.
 
 
 ---

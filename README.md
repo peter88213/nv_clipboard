@@ -37,10 +37,20 @@ projects, or within a project.
 
 ## Download and install
 
-[Download the latest release (version 0.6.0)](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.6.0.pyzw)
+### Default: Executable Python zip archive
 
-- Extract the "nv_clipboard_v0.6.0" folder from the downloaded zipfile "nv_clipboard_v0.6.0.pyzw".
-- Move into this new folder and launch **setup.pyw**. This installs the plugin for the local user.
+Download the latest release [nv_clipboard_v0.6.0.pyzw](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.6.0.pyzw)
+
+- Launch *nv_clipboard_v0.6.0.pyzw* by double-clicking (Windows/Linux desktop),
+- or execute `python nv_clipboard_v0.6.0.pyzw` (Windows), resp. `python3 nv_clipboard_v0.6.0.pyzw` (Linux) on the command line.
+
+### Alternative: Zip file
+
+The package is also available in zip format: [nv_clipboard_v0.6.0.zip](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.6.0.zip)
+
+- Extract the *nv_clipboard_v0.6.0* folder from the downloaded zipfile "nv_clipboard_v0.6.0.zip".
+- Move into this new folder and launch *setup.pyw* by double-clicking (Windows/Linux desktop), 
+- or execute `python setup.pyw` (Windows), resp. `python3 setup.pyw` (Linux) on the command line.
 
 ---
 
@@ -48,7 +58,7 @@ projects, or within a project.
 
 ## Usage
 
-See the [instructions for use](docs/usage.md)
+See the [online manual](https://peter88213.github.io/nvhelp-en/nv_clipboard/)
 
 ---
 
