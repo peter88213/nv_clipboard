@@ -44,6 +44,18 @@ Download the latest release [nv_clipboard_v0.6.0.pyzw](https://github.com/peter8
 - Launch *nv_clipboard_v0.6.0.pyzw* by double-clicking (Windows/Linux desktop),
 - or execute `python nv_clipboard_v0.6.0.pyzw` (Windows), resp. `python3 nv_clipboard_v0.6.0.pyzw` (Linux) on the command line.
 
+#### Important
+
+Many web browsers recognize the download as an executable file and offer to open it immediately. 
+This starts the installation.
+
+However, depending on the security settings, the browser may 
+initially  refuse  to download the executable file. 
+In this case, your confirmation or an additional action is required. 
+If this is not possible, you have the option of downloading 
+the zip file. 
+
+
 ### Alternative: Zip file
 
 The package is also available in zip format: [nv_clipboard_v0.6.0.zip](https://github.com/peter88213/nv_clipboard/raw/main/dist/nv_clipboard_v0.6.0.zip)
