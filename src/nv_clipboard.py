@@ -15,32 +15,14 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-import gettext
-import locale
-import os
 from pathlib import Path
-import sys
 import webbrowser
 
+from nvclipboardlib.nvclipboard_globals import _
 from nvclipboardlib.clipboard_manager import ClipboardManager
 from nvclipboardlib.clipboard_operation import ClipboardOperation
 from nvlib.plugin.plugin_base import PluginBase
 import tkinter as tk
-
-# Initialize localization.
-LOCALE_PATH = f'{os.path.dirname(sys.argv[0])}/locale/'
-try:
-    CURRENT_LANGUAGE = locale.getlocale()[0][:2]
-except:
-    # Fallback for old Windows versions.
-    CURRENT_LANGUAGE = locale.getdefaultlocale()[0][:2]
-try:
-    t = gettext.translation('nv_clipboard', LOCALE_PATH, languages=[CURRENT_LANGUAGE])
-    _ = t.gettext
-except:
-
-    def _(message):
-        return message
 
 
 class Plugin(PluginBase):
