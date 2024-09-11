@@ -18,13 +18,13 @@ GNU General Public License for more details.
 from pathlib import Path
 import webbrowser
 
-from nvclipboardlib.generic_keys import GenericKeys
-from nvclipboardlib.mac_keys import MacKeys
-from nvclipboardlib.windows_keys import WindowsKeys
 from nvclipboardlib.nvclipboard_globals import _
-from nvclipboardlib.nvclipboard_globals import PLATFORM
 from nvclipboardlib.clipboard_manager import ClipboardManager
 from nvclipboardlib.clipboard_operation import ClipboardOperation
+from nvclipboardlib.generic_keys import GenericKeys
+from nvclipboardlib.mac_keys import MacKeys
+from nvclipboardlib.nvclipboard_globals import PLATFORM
+from nvclipboardlib.windows_keys import WindowsKeys
 from nvlib.plugin.plugin_base import PluginBase
 import tkinter as tk
 
