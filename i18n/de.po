@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.0\n"
-"POT-Creation-Date: 2024-09-11 09:48:17\n"
-"PO-Revision-Date: 2024-09-11 09:48:17\n"
+"Project-Id-Version: 1.1.1\n"
+"POT-Creation-Date: 2024-09-11 14:51:16\n"
+"PO-Revision-Date: 2024-09-11 14:51:16\n"
 "Last-Translator: Peter Triesberger\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,9 @@ msgstr "Zwischenablage Online-Hilfe"
 
 msgid "Copy"
 msgstr "Kopieren"
+
+msgid "Ctrl"
+msgstr "Strg"
 
 msgid "Paste"
 msgstr "Einfügen"
