@@ -5,6 +5,12 @@
 ## Changelog
 
 
+### Version 1.1.0
+
+- Provide shortcuts and key bindings for Mac OS.
+
+Compatibility: novelibre 4.3 API
+
 ### Version 1.0.0
 
 - Refactor: Change import order for a quick start.
