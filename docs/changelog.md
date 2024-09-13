@@ -5,6 +5,12 @@
 ## Changelog
 
 
+### Version 1.1.2
+
+- Refactor the event bindings.
+
+Compatibility: novelibre 4.3 API
+
 ### Version 1.1.1
 
 - Automatically resize the setup window.
