@@ -5,6 +5,15 @@
 ## Changelog
 
 
+### Version 1.2.0
+
+Add tooltips.
+
+Refactor:
+- Move platform selector and keyboard settings into the new platform_settings module.
+
+Compatibility: novelibre 4.11 API
+
 ### Version 1.1.2
 
 - Refactor the event bindings.
