@@ -16,11 +16,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 from pathlib import Path
+from tkinter import ttk
 import webbrowser
 
 from nvclipboardlib.nvclipboard_globals import _
 from nvclipboardlib.clipboard_manager import ClipboardManager
-from nvclipboardlib.clipboard_operation import ClipboardOperation
 from nvclipboardlib.key_definitions import KEYS
 from nvlib.plugin.plugin_base import PluginBase
 import tkinter as tk
@@ -52,8 +52,8 @@ class Plugin(PluginBase):
         Overrides the superclass method.
         """
         # self._cut.disable()
-        self._copy.disable()
-        self._paste.disable()
+        self._copyButton.disable()
+        self._pasteButton.disable()
 
     def enable_menu(self):
         """Enable toolbar buttons when a project is open.
@@ -61,8 +61,8 @@ class Plugin(PluginBase):
         Overrides the superclass method.
         """
         # self._cut.enable()
-        self._copy.enable()
-        self._paste.enable()
+        self._copyButton.enable()
+        self._pasteButton.enable()
 
     def install(self, model, view, controller, prefs=None):
         """Install the plugin.
@@ -84,7 +84,11 @@ class Plugin(PluginBase):
         # Set up the clipboard manager.
         clipboardManager = ClipboardManager(model, view, controller)
 
-        #--- Configure the toolbar and bind keys.
+        # Bind Keyboard events.
+        view.tv.tree.bind(KEYS.COPY[0], clipboardManager._copy_element)
+        view.tv.tree.bind(KEYS.PASTE[0], clipboardManager._paste_element)
+
+        # Configure the toolbar.
 
         # Get the icons.
         prefs = controller.get_preferences()
@@ -98,10 +102,6 @@ class Plugin(PluginBase):
         except:
             iconPath = None
         try:
-            cutIcon = tk.PhotoImage(file=f'{iconPath}/cut.png')
-        except:
-            cutIcon = None
-        try:
             copyIcon = tk.PhotoImage(file=f'{iconPath}/copy.png')
         except:
             copyIcon = None
@@ -113,18 +113,45 @@ class Plugin(PluginBase):
         # Put a Separator on the toolbar.
         tk.Frame(view.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
 
-        # Initialize the operations.
-        # self._cut = ClipboardOperation(view,_('Cut'),cutIcon,KEYS.CUT[0],clipboardManager._cut_element)
-        self._copy = ClipboardOperation(view, _('Copy'), copyIcon, KEYS.COPY[0], clipboardManager._copy_element)
-        self._paste = ClipboardOperation(view, _('Paste'), pasteIcon, KEYS.PASTE[0], clipboardManager._paste_element)
+        # Put a "Copy" button on the toolbar.
+        self._copyButton = ttk.Button(
+            view.toolbar.buttonBar,
+            text=f"{_('Copy')} ({KEYS.COPY[1]})",
+            image=copyIcon,
+            command=clipboardManager._copy_element
+            )
+        self._copyButton.pack(side='left')
+        self._copyButton.image = copyIcon
+
+        # Put a "Paste" button on the toolbar.
+        self._pasteButton = ttk.Button(
+            view.toolbar.buttonBar,
+            text=f"{_('Paste')} ({KEYS.PASTE[1]})",
+            image=pasteIcon,
+            command=clipboardManager._paste_element
+            )
+        self._pasteButton.pack(side='left')
+        self._pasteButton.image = pasteIcon
+
+        # Initialize tooltips.
+        if not prefs['enable_hovertips']:
+            return
+
+        try:
+            from idlelib.tooltip import Hovertip
+        except ModuleNotFoundError:
+            return
+
+        Hovertip(self._copyButton, self._copyButton['text'])
+        Hovertip(self._pasteButton, self._pasteButton['text'])
 
     def lock(self):
         """Inhibit changes on the model.
         
         Overrides the superclass method.
         """
-        # self._cut.disable()
-        self._paste.disable()
+        # self._cutButton.disable()
+        self._pasteButton.config(state='disabled')
 
     def unlock(self):
         """Enable changes on the model.
@@ -132,4 +159,4 @@ class Plugin(PluginBase):
         Overrides the superclass method.
         """
         # self._cut.enable()
-        self._paste.enable()
+        self._pasteButton.config(state='normal')
