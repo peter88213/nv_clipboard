@@ -4,15 +4,20 @@ Copyright (c) 2024 Peter Triesberger
 For further information see https://github.com/peter88213/nv_clipboard
 License: GNU GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 """
-from nvclipboardlib.nvclipboard_globals import PLATFORM
+import platform
+
 from nvclipboardlib.generic_keys import GenericKeys
 from nvclipboardlib.mac_keys import MacKeys
 
-if PLATFORM == 'win':
+if platform.system() == 'Windows':
+    PLATFORM = 'win'
     KEYS = GenericKeys()
-elif PLATFORM == 'ix':
+elif platform.system() in ('Linux', 'FreeBSD'):
+    PLATFORM = 'ix'
     KEYS = GenericKeys()
-elif PLATFORM == 'mac':
+elif platform.system() == 'Darwin':
+    PLATFORM = 'mac'
     KEYS = MacKeys()
 else:
+    PLATFORM = ''
     KEYS = GenericKeys()

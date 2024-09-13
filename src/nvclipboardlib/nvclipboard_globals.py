@@ -7,7 +7,6 @@ License: GNU GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 import gettext
 import locale
 import os
-import platform
 import sys
 
 # Initialize localization.
@@ -24,13 +23,4 @@ except:
 
     def _(message):
         return message
-
-if platform.system() == 'Windows':
-    PLATFORM = 'win'
-elif platform.system() in ('Linux', 'FreeBSD'):
-    PLATFORM = 'ix'
-elif platform.system() == 'Darwin':
-    PLATFORM = 'mac'
-else:
-    PLATFORM = ''
 
