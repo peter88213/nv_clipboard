@@ -5,6 +5,12 @@
 ## Changelog
 
 
+### Version 1.2.1
+
+- Fix a bug where copy/paste is not disabled when the project is locked or no project is open.
+
+Compatibility: novelibre 4.11 API
+
 ### Version 1.2.0
 
 Add tooltips.

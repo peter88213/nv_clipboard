@@ -24,6 +24,9 @@ class ClipboardManager:
         self._ctrl = controller
 
     def _cut_element(self, event=None, elemPrefix=None):
+        if self._mdl.prjFile is None:
+            return
+
         if self._ctrl.check_lock():
             return
 
@@ -43,6 +46,9 @@ class ClipboardManager:
         return 'break'
 
     def _copy_element(self, event=None, elemPrefix=None):
+        if self._mdl.prjFile is None:
+            return
+
         try:
             node = self._ui.tv.tree.selection()[0]
         except:
@@ -92,6 +98,9 @@ class ClipboardManager:
         return 'break'
 
     def _paste_element(self, event=None, elemPrefix=None):
+        if self._mdl.prjFile is None:
+            return
+
         if self._ctrl.check_lock():
             return
 

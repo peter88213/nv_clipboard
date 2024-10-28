@@ -51,18 +51,18 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cut.disable()
-        self._copyButton.disable()
-        self._pasteButton.disable()
+        # self._cut.config(state='disabled')
+        self._copyButton.config(state='disabled')
+        self._pasteButton.config(state='disabled')
 
     def enable_menu(self):
         """Enable toolbar buttons when a project is open.
         
         Overrides the superclass method.
         """
-        # self._cut.enable()
-        self._copyButton.enable()
-        self._pasteButton.enable()
+        # self._cut.config(state='normal')
+        self._copyButton.config(state='normal')
+        self._pasteButton.config(state='normal')
 
     def install(self, model, view, controller, prefs=None):
         """Install the plugin.
@@ -75,18 +75,19 @@ class Plugin(PluginBase):
         Optional arguments:
             prefs -- deprecated. Please use controller.get_preferences() instead.
         
-        Overrides the superclass method.
+        Extends the superclass method.
         """
+        super().install(model, view, controller, prefs)
 
         # Add an entry to the Help menu.
-        view.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
+        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
 
         # Set up the clipboard manager.
         clipboardManager = ClipboardManager(model, view, controller)
 
         # Bind Keyboard events.
-        view.tv.tree.bind(KEYS.COPY[0], clipboardManager._copy_element)
-        view.tv.tree.bind(KEYS.PASTE[0], clipboardManager._paste_element)
+        self._ui.tv.tree.bind(KEYS.COPY[0], clipboardManager._copy_element)
+        self._ui.tv.tree.bind(KEYS.PASTE[0], clipboardManager._paste_element)
 
         # Configure the toolbar.
 
@@ -111,11 +112,11 @@ class Plugin(PluginBase):
             pasteIcon = None
 
         # Put a Separator on the toolbar.
-        tk.Frame(view.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
+        tk.Frame(self._ui.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
 
         # Put a "Copy" button on the toolbar.
         self._copyButton = ttk.Button(
-            view.toolbar.buttonBar,
+            self._ui.toolbar.buttonBar,
             text=f"{_('Copy')} ({KEYS.COPY[1]})",
             image=copyIcon,
             command=clipboardManager._copy_element
@@ -125,7 +126,7 @@ class Plugin(PluginBase):
 
         # Put a "Paste" button on the toolbar.
         self._pasteButton = ttk.Button(
-            view.toolbar.buttonBar,
+            self._ui.toolbar.buttonBar,
             text=f"{_('Paste')} ({KEYS.PASTE[1]})",
             image=pasteIcon,
             command=clipboardManager._paste_element
@@ -150,13 +151,18 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cutButton.disable()
+        # self._cutButton.config(state='disabled')
         self._pasteButton.config(state='disabled')
+
+    def on_close(self):
+        """Actions to be performed when a project is closed."""
+        self.disable_menu()
 
     def unlock(self):
         """Enable changes on the model.
         
         Overrides the superclass method.
         """
-        # self._cut.enable()
+        # self._cut.config(state='normal')
         self._pasteButton.config(state='normal')
+
