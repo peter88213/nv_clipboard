@@ -64,7 +64,7 @@ class Plugin(PluginBase):
         self._copyButton.config(state='normal')
         self._pasteButton.config(state='normal')
 
-    def install(self, model, view, controller, prefs=None):
+    def install(self, model, view, controller):
         """Install the plugin.
         
         Positional arguments:
@@ -77,7 +77,7 @@ class Plugin(PluginBase):
         
         Extends the superclass method.
         """
-        super().install(model, view, controller, prefs)
+        super().install(model, view, controller)
 
         # Add an entry to the Help menu.
         self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
