@@ -19,8 +19,8 @@ from pathlib import Path
 from tkinter import ttk
 import webbrowser
 
-from nvclipboardlib.nvclipboard_globals import _
 from nvclipboardlib.clipboard_manager import ClipboardManager
+from nvclipboardlib.nvclipboard_globals import _
 from nvclipboardlib.platform.platform_settings import KEYS
 from nvlib.plugin.plugin_base import PluginBase
 import tkinter as tk
