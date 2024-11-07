@@ -31,7 +31,7 @@ class ClipboardManager:
             return
 
         try:
-            node = self._ui.tv.tree.selection()[0]
+            node = self._ui.selectedNode
         except:
             return
 
@@ -50,7 +50,7 @@ class ClipboardManager:
             return
 
         try:
-            node = self._ui.tv.tree.selection()[0]
+            node = self._ui.selectedNode
         except:
             return
 
@@ -105,7 +105,7 @@ class ClipboardManager:
             return
 
         try:
-            node = self._ui.tv.tree.selection()[0]
+            node = self._ui.selectedNode
         except:
             return
 
