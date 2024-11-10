@@ -41,7 +41,7 @@ class Plugin(PluginBase):
         isRejected: Boolean --  Rejection flag.
     """
     VERSION = '@release'
-    API_VERSION = '4.11'
+    API_VERSION = '5.0'
     DESCRIPTION = 'A clipboard plugin'
     URL = 'https://github.com/peter88213/nv_clipboard'
     _HELP_URL = f'https://peter88213.github.io/{_("nvhelp-en")}/nv_clipboard/'

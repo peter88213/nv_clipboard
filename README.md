@@ -33,7 +33,7 @@ projects, or within a project.
 
 ## Requirements
 
-- [novelibre](https://github.com/peter88213/novelibre/) version 4.11+
+- [novelibre](https://github.com/peter88213/novelibre/) version 5.0+
 
 ## Download and install
 
