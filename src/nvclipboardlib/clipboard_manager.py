@@ -175,7 +175,7 @@ class ClipboardManager:
                 ppId = self._mdl.add_plot_point(targetNode=elemId)
                 self._mdl.novel.plotPoints[ppId].from_xml(xmlPoint)
 
-        self._ctrl.refresh_views()
+        self._ctrl.refresh_tree()
         self._ui.tv.go_to_node(elemId)
         return 'break'
 
