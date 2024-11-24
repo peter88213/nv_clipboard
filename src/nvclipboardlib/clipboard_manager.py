@@ -136,19 +136,19 @@ class ClipboardManager:
         if nodePrefix == SECTION_PREFIX:
             typeStr = xmlElement.get('type', 0)
             if int(typeStr) > 1:
-                elemCreator = self._mdl.add_stage
+                elemCreator = self._mdl.add_new_stage
             else:
-                elemCreator = self._mdl.add_section
+                elemCreator = self._mdl.add_new_section
             elemContainer = self._mdl.novel.sections
         else:
             elementControls = {
-                CHAPTER_PREFIX: (self._mdl.add_chapter, self._mdl.novel.chapters),
-                PLOT_LINE_PREFIX: (self._mdl.add_plot_line, self._mdl.novel.plotLines),
-                PLOT_POINT_PREFIX: (self._mdl.add_plot_point, self._mdl.novel.plotPoints),
-                CHARACTER_PREFIX: (self._mdl.add_character, self._mdl.novel.characters),
-                LOCATION_PREFIX: (self._mdl.add_location, self._mdl.novel.locations),
-                ITEM_PREFIX: (self._mdl.add_item, self._mdl.novel.items),
-                PRJ_NOTE_PREFIX: (self._mdl.add_project_note, self._mdl.novel.projectNotes)
+                CHAPTER_PREFIX: (self._mdl.add_new_chapter, self._mdl.novel.chapters),
+                PLOT_LINE_PREFIX: (self._mdl.add_new_plot_line, self._mdl.novel.plotLines),
+                PLOT_POINT_PREFIX: (self._mdl.add_new_plot_point, self._mdl.novel.plotPoints),
+                CHARACTER_PREFIX: (self._mdl.add_new_character, self._mdl.novel.characters),
+                LOCATION_PREFIX: (self._mdl.add_new_location, self._mdl.novel.locations),
+                ITEM_PREFIX: (self._mdl.add_new_item, self._mdl.novel.items),
+                PRJ_NOTE_PREFIX: (self._mdl.add_new_project_note, self._mdl.novel.projectNotes)
             }
             if not nodePrefix in elementControls:
                 return
@@ -166,13 +166,13 @@ class ClipboardManager:
             for xmlSection in xmlElement.iterfind('SECTION'):
                 typeStr = xmlSection.get('type', 0)
                 if int(typeStr) > 1:
-                    scId = self._mdl.add_stage(targetNode=elemId)
+                    scId = self._mdl.add_new_stage(targetNode=elemId)
                 else:
-                    scId = self._mdl.add_section(targetNode=elemId)
+                    scId = self._mdl.add_new_section(targetNode=elemId)
                 self._mdl.novel.sections[scId].from_xml(xmlSection)
         elif nodePrefix == PLOT_LINE_PREFIX:
             for xmlPoint in xmlElement.iterfind('POINT'):
-                ppId = self._mdl.add_plot_point(targetNode=elemId)
+                ppId = self._mdl.add_new_plot_point(targetNode=elemId)
                 self._mdl.novel.plotPoints[ppId].from_xml(xmlPoint)
 
         self._ctrl.refresh_tree()
