@@ -51,7 +51,7 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cut.config(state='disabled')
+        self._cut.config(state='disabled')
         self._copyButton.config(state='disabled')
         self._pasteButton.config(state='disabled')
 
@@ -60,7 +60,7 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cut.config(state='normal')
+        self._cut.config(state='normal')
         self._copyButton.config(state='normal')
         self._pasteButton.config(state='normal')
 
@@ -86,6 +86,7 @@ class Plugin(PluginBase):
         clipboardManager = ClipboardManager(model, view, controller)
 
         # Bind Keyboard events.
+        self._ui.tv.tree.bind(KEYS.CUT[0], clipboardManager._cut_element)
         self._ui.tv.tree.bind(KEYS.COPY[0], clipboardManager._copy_element)
         self._ui.tv.tree.bind(KEYS.PASTE[0], clipboardManager._paste_element)
 
@@ -103,6 +104,10 @@ class Plugin(PluginBase):
         except:
             iconPath = None
         try:
+            cutIcon = tk.PhotoImage(file=f'{iconPath}/cut.png')
+        except:
+            cutIcon = None
+        try:
             copyIcon = tk.PhotoImage(file=f'{iconPath}/copy.png')
         except:
             copyIcon = None
@@ -113,6 +118,16 @@ class Plugin(PluginBase):
 
         # Put a Separator on the toolbar.
         tk.Frame(self._ui.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
+
+        # Put a "Cut" button on the toolbar.
+        self._cutButton = ttk.Button(
+            self._ui.toolbar.buttonBar,
+            text=f"{_('Cut')} ({KEYS.CUT[1]})",
+            image=cutIcon,
+            command=clipboardManager._cut_element
+            )
+        self._cutButton.pack(side='left')
+        self._cutButton.image = cutIcon
 
         # Put a "Copy" button on the toolbar.
         self._copyButton = ttk.Button(
@@ -143,6 +158,7 @@ class Plugin(PluginBase):
         except ModuleNotFoundError:
             return
 
+        Hovertip(self._cutButton, self._cutButton['text'])
         Hovertip(self._copyButton, self._copyButton['text'])
         Hovertip(self._pasteButton, self._pasteButton['text'])
 
@@ -151,7 +167,7 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cutButton.config(state='disabled')
+        self._cutButton.config(state='disabled')
         self._pasteButton.config(state='disabled')
 
     def on_close(self):
@@ -163,6 +179,6 @@ class Plugin(PluginBase):
         
         Overrides the superclass method.
         """
-        # self._cut.config(state='normal')
+        self._cut.config(state='normal')
         self._pasteButton.config(state='normal')
 

@@ -42,7 +42,7 @@ class ClipboardManager:
             self._ui.tv.go_to_node(self._ui.tv.tree.prev(node))
         else:
             self._ui.tv.go_to_node(self._ui.tv.tree.parent(node))
-        self._mdl.delete_element(node)
+        self._mdl.delete_element(node, trash=False)
         return 'break'
 
     def _copy_element(self, event=None, elemPrefix=None):
