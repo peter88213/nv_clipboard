@@ -44,7 +44,7 @@ class Plugin(PluginBase):
     API_VERSION = '5.0'
     DESCRIPTION = 'A clipboard plugin'
     URL = 'https://github.com/peter88213/nv_clipboard'
-    _HELP_URL = f'{_("https://peter88213.github.io/nvhelp-en")}/nv_clipboard/'
+    HELP_URL = f'{_("https://peter88213.github.io/nvhelp-en")}/nv_clipboard/'
 
     def disable_menu(self):
         """Disable toolbar buttons when no project is open.
@@ -80,7 +80,7 @@ class Plugin(PluginBase):
         super().install(model, view, controller)
 
         # Add an entry to the Help menu.
-        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=lambda: webbrowser.open(self._HELP_URL))
+        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=self.open_help_page)
 
         # Set up the clipboard manager.
         clipboardManager = ClipboardManager(model, view, controller)
@@ -173,6 +173,9 @@ class Plugin(PluginBase):
     def on_close(self):
         """Actions to be performed when a project is closed."""
         self.disable_menu()
+
+    def open_help_page(self):
+        webbrowser.open(self.HELP_URL)
 
     def unlock(self):
         """Enable changes on the model.
