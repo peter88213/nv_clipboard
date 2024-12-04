@@ -19,9 +19,9 @@ from pathlib import Path
 from tkinter import ttk
 import webbrowser
 
-from nvclipboardlib.clipboard_manager import ClipboardManager
-from nvclipboardlib.nvclipboard_globals import _
-from nvclipboardlib.platform.platform_settings import KEYS
+from nvclipboard.clipboard_manager import ClipboardManager
+from nvclipboard.nvclipboard_locale import _
+from nvclipboard.platform.platform_settings import KEYS
 from nvlib.controller.plugin.plugin_base import PluginBase
 import tkinter as tk
 
@@ -46,23 +46,29 @@ class Plugin(PluginBase):
     URL = 'https://github.com/peter88213/nv_clipboard'
     HELP_URL = f'{_("https://peter88213.github.io/nvhelp-en")}/nv_clipboard/'
 
+    def cut_element(self):
+        self.clipboardManager.cut_element()
+
+    def copy_element(self):
+        self.clipboardManager.copy_element()
+
     def disable_menu(self):
         """Disable toolbar buttons when no project is open.
         
         Overrides the superclass method.
         """
-        self._cut.config(state='disabled')
-        self._copyButton.config(state='disabled')
-        self._pasteButton.config(state='disabled')
+        self.cutButton.config(state='disabled')
+        self.copyButton.config(state='disabled')
+        self.pasteButton.config(state='disabled')
 
     def enable_menu(self):
         """Enable toolbar buttons when a project is open.
         
         Overrides the superclass method.
         """
-        self._cut.config(state='normal')
-        self._copyButton.config(state='normal')
-        self._pasteButton.config(state='normal')
+        self.cutButton.config(state='normal')
+        self.copyButton.config(state='normal')
+        self.pasteButton.config(state='normal')
 
     def install(self, model, view, controller):
         """Install the plugin.
@@ -83,12 +89,12 @@ class Plugin(PluginBase):
         self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=self.open_help_page)
 
         # Set up the clipboard manager.
-        clipboardManager = ClipboardManager(model, view, controller)
+        self.clipboardManager = ClipboardManager(model, view, controller)
 
         # Bind Keyboard events.
-        self._ui.tv.tree.bind(KEYS.CUT[0], clipboardManager._cut_element)
-        self._ui.tv.tree.bind(KEYS.COPY[0], clipboardManager._copy_element)
-        self._ui.tv.tree.bind(KEYS.PASTE[0], clipboardManager._paste_element)
+        self._ui.tv.tree.bind(KEYS.CUT[0], self.cut_element)
+        self._ui.tv.tree.bind(KEYS.COPY[0], self.copy_element)
+        self._ui.tv.tree.bind(KEYS.PASTE[0], self.paste_element)
 
         # Configure the toolbar.
 
@@ -120,34 +126,34 @@ class Plugin(PluginBase):
         tk.Frame(self._ui.toolbar.buttonBar, bg='light gray', width=1).pack(side='left', fill='y', padx=4)
 
         # Put a "Cut" button on the toolbar.
-        self._cutButton = ttk.Button(
+        self.cutButton = ttk.Button(
             self._ui.toolbar.buttonBar,
             text=f"{_('Cut')} ({KEYS.CUT[1]})",
             image=cutIcon,
-            command=clipboardManager._cut_element
+            command=self.cut_element
             )
-        self._cutButton.pack(side='left')
-        self._cutButton.image = cutIcon
+        self.cutButton.pack(side='left')
+        self.cutButton.image = cutIcon
 
         # Put a "Copy" button on the toolbar.
-        self._copyButton = ttk.Button(
+        self.copyButton = ttk.Button(
             self._ui.toolbar.buttonBar,
             text=f"{_('Copy')} ({KEYS.COPY[1]})",
             image=copyIcon,
-            command=clipboardManager._copy_element
+            command=self.copy_element
             )
-        self._copyButton.pack(side='left')
-        self._copyButton.image = copyIcon
+        self.copyButton.pack(side='left')
+        self.copyButton.image = copyIcon
 
         # Put a "Paste" button on the toolbar.
-        self._pasteButton = ttk.Button(
+        self.pasteButton = ttk.Button(
             self._ui.toolbar.buttonBar,
             text=f"{_('Paste')} ({KEYS.PASTE[1]})",
             image=pasteIcon,
-            command=clipboardManager._paste_element
+            command=self.paste_element
             )
-        self._pasteButton.pack(side='left')
-        self._pasteButton.image = pasteIcon
+        self.pasteButton.pack(side='left')
+        self.pasteButton.image = pasteIcon
 
         # Initialize tooltips.
         if not prefs['enable_hovertips']:
@@ -158,17 +164,17 @@ class Plugin(PluginBase):
         except ModuleNotFoundError:
             return
 
-        Hovertip(self._cutButton, self._cutButton['text'])
-        Hovertip(self._copyButton, self._copyButton['text'])
-        Hovertip(self._pasteButton, self._pasteButton['text'])
+        Hovertip(self.cutButton, self.cutButton['text'])
+        Hovertip(self.copyButton, self.copyButton['text'])
+        Hovertip(self.pasteButton, self.pasteButton['text'])
 
     def lock(self):
         """Inhibit changes on the model.
         
         Overrides the superclass method.
         """
-        self._cutButton.config(state='disabled')
-        self._pasteButton.config(state='disabled')
+        self.cutButton.config(state='disabled')
+        self.pasteButton.config(state='disabled')
 
     def on_close(self):
         """Actions to be performed when a project is closed."""
@@ -177,11 +183,14 @@ class Plugin(PluginBase):
     def open_help_page(self):
         webbrowser.open(self.HELP_URL)
 
+    def paste_element(self):
+        self.clipboardManager.paste_element()
+
     def unlock(self):
         """Enable changes on the model.
         
         Overrides the superclass method.
         """
-        self._cut.config(state='normal')
-        self._pasteButton.config(state='normal')
+        self.cutButton.config(state='normal')
+        self.pasteButton.config(state='normal')
 

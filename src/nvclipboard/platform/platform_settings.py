@@ -6,8 +6,8 @@ License: GNU GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 """
 import platform
 
-from nvclipboardlib.platform.generic_keys import GenericKeys
-from nvclipboardlib.platform.mac_keys import MacKeys
+from nvclipboard.platform.generic_keys import GenericKeys
+from nvclipboard.platform.mac_keys import MacKeys
 
 if platform.system() == 'Windows':
     PLATFORM = 'win'

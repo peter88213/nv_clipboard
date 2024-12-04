@@ -23,7 +23,7 @@ class ClipboardManager:
         self._ui = view
         self._ctrl = controller
 
-    def _cut_element(self, event=None, elemPrefix=None):
+    def cut_element(self, event=None, elemPrefix=None):
         if self._mdl.prjFile is None:
             return
 
@@ -35,7 +35,7 @@ class ClipboardManager:
         except:
             return
 
-        if self._copy_element(elemPrefix) is None:
+        if self.copy_element(elemPrefix) is None:
             return
 
         if self._ui.tv.tree.prev(node):
@@ -45,7 +45,7 @@ class ClipboardManager:
         self._mdl.delete_element(node, trash=False)
         return 'break'
 
-    def _copy_element(self, event=None, elemPrefix=None):
+    def copy_element(self, event=None, elemPrefix=None):
         if self._mdl.prjFile is None:
             return
 
@@ -97,7 +97,7 @@ class ClipboardManager:
         self._ui.root.update()
         return 'break'
 
-    def _paste_element(self, event=None, elemPrefix=None):
+    def paste_element(self, event=None, elemPrefix=None):
         if self._mdl.prjFile is None:
             return
 
