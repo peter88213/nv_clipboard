@@ -1,4 +1,4 @@
-"""Provide a class to manage the novelibre tree view clipboard transfer.
+"""Provide a servide class to manage the novelibre tree view clipboard transfer.
 
 Copyright (c) 2024 Peter Triesberger
 For further information see https://github.com/peter88213/nv_clipboard
@@ -6,6 +6,7 @@ License: GNU GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 """
 from xml.etree import ElementTree as ET
 
+from mvclib.controller.service_base import ServiceBase
 from nvlib.novx_globals import CHAPTER_PREFIX
 from nvlib.novx_globals import CHARACTER_PREFIX
 from nvlib.novx_globals import ITEM_PREFIX
@@ -16,14 +17,9 @@ from nvlib.novx_globals import PRJ_NOTE_PREFIX
 from nvlib.novx_globals import SECTION_PREFIX
 
 
-class ClipboardManager:
+class ClipboardManager(ServiceBase):
 
-    def __init__(self, model, view, controller):
-        self._mdl = model
-        self._ui = view
-        self._ctrl = controller
-
-    def cut_element(self, event=None, elemPrefix=None):
+    def cut_element(self, elemPrefix=None):
         if self._mdl.prjFile is None:
             return
 
@@ -45,7 +41,7 @@ class ClipboardManager:
         self._mdl.delete_element(node, trash=False)
         return 'break'
 
-    def copy_element(self, event=None, elemPrefix=None):
+    def copy_element(self, elemPrefix=None):
         if self._mdl.prjFile is None:
             return
 
@@ -97,7 +93,7 @@ class ClipboardManager:
         self._ui.root.update()
         return 'break'
 
-    def paste_element(self, event=None, elemPrefix=None):
+    def paste_element(self, elemPrefix=None):
         if self._mdl.prjFile is None:
             return
 

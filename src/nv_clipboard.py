@@ -46,10 +46,10 @@ class Plugin(PluginBase):
     URL = 'https://github.com/peter88213/nv_clipboard'
     HELP_URL = f'{_("https://peter88213.github.io/nvhelp-en")}/nv_clipboard/'
 
-    def cut_element(self):
+    def cut_element(self, event=None):
         self.clipboardManager.cut_element()
 
-    def copy_element(self):
+    def copy_element(self, event=None):
         self.clipboardManager.copy_element()
 
     def disable_menu(self):
@@ -183,7 +183,7 @@ class Plugin(PluginBase):
     def open_help_page(self):
         webbrowser.open(self.HELP_URL)
 
-    def paste_element(self):
+    def paste_element(self, event=None):
         self.clipboardManager.paste_element()
 
     def unlock(self):
