@@ -86,7 +86,7 @@ class Plugin(PluginBase):
         super().install(model, view, controller)
 
         # Add an entry to the Help menu.
-        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=self.open_help_page)
+        self._ui.helpMenu.add_command(label=_('Clipboard Online help'), command=self.open_help)
 
         # Set up the clipboard manager.
         self.clipboardManager = ClipboardManager(model, view, controller)
@@ -180,7 +180,7 @@ class Plugin(PluginBase):
         """Actions to be performed when a project is closed."""
         self.disable_menu()
 
-    def open_help_page(self):
+    def open_help(self):
         webbrowser.open(self.HELP_URL)
 
     def paste_element(self, event=None):
