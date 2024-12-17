@@ -4,7 +4,7 @@
 
 ## Changelog
 
-### Version 5.0.3
+### Version 5.0.4
 
 - Enable the "Cut" feature.
 
@@ -12,7 +12,7 @@ Library update:
 - Refactor the code for better maintainability.
 
 API: 5.0
-Based on novelibre 5.0.24
+Based on novelibre 5.0.28
 
 ### Version 1.2.1
 
