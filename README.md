@@ -33,7 +33,11 @@ projects, or within a project.
 
 ## Requirements
 
-- [novelibre](https://github.com/peter88213/novelibre/) version 5.0+
+- [novelibre](https://github.com/peter88213/novelibre/) version 5.0 - 5.4
+
+**NOTE**
+
+As of *novelibre* 5.5, this feature is included, so please don't install *nv_clipboard*.
 
 ## Download and install
 
