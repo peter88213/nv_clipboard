@@ -35,9 +35,10 @@ projects, or within a project.
 
 - [novelibre](https://github.com/peter88213/novelibre/) version 5.0 - 5.4
 
-**NOTE**
-
-As of *novelibre* 5.5, this feature is included, so please don't install *nv_clipboard*.
+> [!IMPORTANT]
+>
+> As of *novelibre* 5.5, this feature is included, so please don't install *nv_clipboard*
+> if you use an up-to-date version of *novelibre*.
 
 ## Download and install
 
@@ -48,16 +49,16 @@ Download the latest release [nv_clipboard_v5.0.4.pyzw](https://github.com/peter8
 - Launch *nv_clipboard_v5.0.4.pyzw* by double-clicking (Windows/Linux desktop),
 - or execute `python nv_clipboard_v5.0.4.pyzw` (Windows), resp. `python3 nv_clipboard_v5.0.4.pyzw` (Linux) on the command line.
 
-#### Important
-
-Many web browsers recognize the download as an executable file and offer to open it immediately. 
-This starts the installation.
-
-However, depending on your security settings, your browser may 
-initially  refuse  to download the executable file. 
-In this case, your confirmation or an additional action is required. 
-If this is not possible, you have the option of downloading 
-the zip file. 
+> [!IMPORTANT]
+>
+> Many web browsers recognize the download as an executable file and offer to open it immediately. 
+> This starts the installation.
+> 
+> However, depending on your security settings, your browser may 
+> initially  refuse  to download the executable file. 
+> In this case, your confirmation or an additional action is required. 
+> If this is not possible, you have the option of downloading 
+> the zip file. 
 
 
 ### Alternative: Zip file
